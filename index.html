@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Design</title>
+    <link rel="stylesheet" href="css/f.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ffffff;
+            padding-top: 80px;
+        }
+
+        .slideshow-container {
+            position: fixed;
+            width: 100%;
+            max-width: 1200px;
+            top: 0px;
+            left: 50%;
+            transform: translateX(-50%);
+            margin: 0 auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            background: #fff;
+            z-index: 999;
+        }
+
+        .slide {
+            position: relative;
+            display: none;
+            width: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .slide.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .slide img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 15px;
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+            transition: 0.4s ease;
+            border-radius: 50%;
+            background-color: rgba(0,0,0,0.3);
+            user-select: none;
+            transform: translateY(-50%);
+        }
+
+        .prev { left: 15px; }
+        .next { right: 15px; }
+
+        .prev:hover, .next:hover {
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        .dots-container {
+            position: absolute;
+            bottom: 15px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .dot {
+            cursor: pointer;
+            height: 12px;
+            width: 12px;
+            margin: 0 5px;
+            background-color: rgba(255,255,255,0.5);
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .dot.active {
+            background-color: #AE275F;
+        }
+
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 5px;
+            padding: 20px;
+            margin-top: 10px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 320px;
+            width: 100%;
+            position: relative;
+        }
+
+        .card-img-container {
+            width: 80%;
+            height: 60%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .card-content {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+        }
+
+        .card-title {
+            margin: 0 0 10px;
+            font-size: 3.8em;
+            color: #0e0000;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .card-btn {
+            background-color: #AE275F;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            font-size: 14px;
+            font-weight: bold !important;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 300;
+            align-self: center;
+            margin-top: auto;
+            width: 50% !important;
+          
+        }
+
+
+        @media (max-width: 768px) {
+            .card-container {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 15px;
+                padding: 15px;
+                margin-top: 180px;
+            }
+
+            .card {
+                height: 300px;
+            }
+
+            .card-img-container {
+                height: 100%;
+            }
+
+            .card-title {
+                font-size: 2.3em;
+            }
+
+            .card-btn {
+                padding: 8px 14px;
+                font-size: 13px;
+                width: 70%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card-container {
+                grid-template-columns: 1fr;
+                margin-top: 160px;
+            }
+
+            .card {
+                height: 280px;
+            }
+
+            .card-img-container {
+                height: 100%;
+            }
+
+            .card-title {
+                font-size: 1.1em;
+            }
+
+            .card-btn {
+                padding: 8px 12px;
+                font-size: 12px;
+                width: 80%;
+            }
+        }
+
+        .card-apply-new-card {
+            grid-column: 1 / -1;
+            max-width: none;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 769px) {
+            .card-apply-new-card {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                align-items: center;
+                height: 160px;
+            }
+
+            .card-apply-new-card .card-img-container {
+                height: 80%;
+            }
+
+            .card-apply-new-card .card-content {
+                padding: 20px;
+            }
+
+            .card-apply-new-card .card-title {
+                font-size: 2em;
+            }
+
+            .card-apply-new-card .card-btn {
+                width: auto;
+                padding: 12px 24px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slideshow-container">
+        <div class="slide active">
+            <img src="src/image1.jpg" alt="Image 1">
+        </div>
+        <div class="slide">
+            <img src="src/image2.jpg" alt="Image 2">
+        </div>
+        <div class="slide">
+            <img src="src/image3.jpeg" alt="Image 3">
+        </div>
+        <div class="slide">
+            <img src="src/image4.jpeg" alt="Image 4">
+        </div>
+        
+       
+        
+        <div class="dots-container">
+            <span class="dot active" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+            <span class="dot" onclick="currentSlide(4)"></span>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card card-apply-new-card">
+            <div class="card-img-container">
+                <img src="src/card.png" alt="Card image" class="card-img">
+            </div>
+            <div class="card-content">
+                <h2 class="card-title">Apply New Card</h2>
+                <button class="card-btn" onclick="animateButton(this, 'data.html')">Click Here</button>
+                <div class="loader"></div>
+            </div>
+        </div>
+
+        <div class="card card-apply-new-card">
+            <div class="card-img-container">
+                <img src="src/card.png" alt="Card image" class="card-img">
+            </div>
+            <div class="card-content">
+                <h2 class="card-title">Rewards Point</h2>
+                <button class="card-btn" onclick="animateButton(this, 'data.html')">Click Here</button>
+                <div class="loader"></div>
+            </div>
+        </div>
+
+        <div class="card card-apply-new-card">
+            <div class="card-img-container">
+                <img src="src/card.png" alt="Card image" class="data.html">
+            </div>
+            <div class="card-content">
+                <h2 class="card-title">Annual Charges</h2>
+                <button class="card-btn" onclick="animateButton(this, 'data.html')">Click Here</button>
+                <div class="loader"></div>
+            </div>
+        </div>
+
+        <div class="card card-apply-new-card">
+            <div class="card-img-container">
+                <img src="src/card.png" alt="Card image" class="data.html">
+            </div>
+            <div class="card-content">
+                <h2 class="card-title">Limit Increase</h2>
+                <button class="card-btn" onclick="animateButton(this, 'data.html')">Click Here</button>
+                <div class="loader"></div>
+            </div>
+        </div>
+
+        <div class="card card-apply-new-card">
+            <div class="card-img-container">
+                <img src="src/card.png" alt="Card image" class="data.html">
+            </div>
+            <div class="card-content">
+                <h2 class="card-title">Seprate Merged Cards</h2>
+                <button class="card-btn" onclick="animateButton(this, 'data.html')">Click Here</button>
+                <div class="loader"></div>
+            </div>
+        </div>
+        <div class="card card-apply-new-card">
+            <div class="card-img-container">
+                <img src="src/card.png" alt="Card image" class="data.html">
+            </div>
+            <div class="card-content">
+                <h2 class="card-title">Card Activations</h2>
+                <button class="card-btn" onclick="animateButton(this, 'data.html')">Click Here</button>
+                <div class="loader"></div>
+            </div>
+        </div>
+
+        <div class="card card-apply-new-card">
+            <div class="card-img-container">
+                <img src="src/card.png" alt="Card image" class="data.html">
+            </div>
+            <div class="card-content">
+                <h2 class="card-title">Card Block</h2>
+                <button class="card-btn" onclick="animateButton(this, 'data.html')">Click Here</button>
+                <div class="loader"></div>
+            </div>
+        </div>
+
+        <div class="card card-apply-new-card">
+            <div class="card-img-container">
+                <img src="src/card.png" alt="Card image" class="data.html">
+            </div>
+            <div class="card-content">
+                <h2 class="card-title">Card Track</h2>
+                <button class="card-btn" onclick="animateButton(this, 'data.html')">Click Here</button>
+                <div class="loader"></div>
+            </div>
+        </div>
+
+        <div class="card card-apply-new-card">
+            <div class="card-img-container">
+                <img src="src/card.png" alt="Card image" class="data.html">
+            </div>
+            <div class="card-content">
+                <h2 class="card-title">Card Protection Plan</h2>
+                <button class="card-btn" onclick="animateButton(this, 'data.html')">Click Here</button>
+                <div class="loader"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let slideIndex = 1;
+        let autoSlideTimer;
+        let isAnimating = false; // Flag to prevent rapid clicks
+        
+        function showSlides(n) {
+            if (isAnimating) return; // Prevent animation overlap
+            isAnimating = true;
+        
+            let i;
+            let slides = document.getElementsByClassName("slide");
+            let dots = document.getElementsByClassName("dot");
+            
+            if (n > slides.length) {slideIndex = 1}
+            if (n < 1) {slideIndex = slides.length}
+            
+            // Determine direction of slide
+            let direction = n > slideIndex ? 'next' : 'prev';
+            
+            // Prepare slides for animation
+            for (i = 0; i < slides.length; i++) {
+                slides[i].classList.remove("active");
+                slides[i].classList.remove("slide-in-right");
+                slides[i].classList.remove("slide-in-left");
+            }
+            
+            for (i = 0; i < dots.length; i++) {
+                dots[i].classList.remove("active");
+            }
+            
+            // Add animation class based on direction
+            if (direction === 'next') {
+                slides[slideIndex-1].classList.add("slide-in-right");
+            } else {
+                slides[slideIndex-1].classList.add("slide-in-left");
+            }
+            
+            slides[slideIndex-1].classList.add("active");
+            dots[slideIndex-1].classList.add("active");
+        
+            // Reset animation flag after animation completes
+            setTimeout(() => {
+                isAnimating = false;
+            }, 500); // Adjust time to match CSS transition duration
+        }
+        
+        function plusSlides(n) {
+            clearTimeout(autoSlideTimer);
+            showSlides(slideIndex += n);
+            startAutoSlide();
+        }
+        
+        function currentSlide(n) {
+            clearTimeout(autoSlideTimer);
+            showSlides(slideIndex = n);
+            startAutoSlide();
+        }
+        
+        function startAutoSlide() {
+            autoSlideTimer = setTimeout(() => {
+                plusSlides(1);
+            }, 3000);
+        }
+        
+        // Initialize slideshow
+        showSlides(slideIndex);
+        startAutoSlide();
+        
+        // Touch event handling
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const swipeThreshold = 50;
+        
+        const slideshowContainer = document.querySelector('.slideshow-container');
+        
+        slideshowContainer.addEventListener('touchstart', (event) => {
+            touchStartX = event.changedTouches[0].screenX;
+        }, false);
+        
+        slideshowContainer.addEventListener('touchend', (event) => {
+            touchEndX = event.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+        
+        function handleSwipe() {
+            if (touchEndX < touchStartX && (touchStartX - touchEndX) > swipeThreshold) {
+                plusSlides(1);
+            }
+            if (touchEndX > touchStartX && (touchEndX - touchStartX) > swipeThreshold) {
+                plusSlides(-1);
+            }
+        }
+        
+        // Disable image drag
+        const slideImages = document.querySelectorAll('.slide img');
+        slideImages.forEach(img => {
+            img.setAttribute('draggable', 'false');
+        });
+        
+        function animateButton(button, url) {
+            const loader = button.nextElementSibling;
+            loader.style.display = 'block';
+            
+            setTimeout(() => {
+                window.location.href = url;
+            }, 100);
+        }
+
+    </script>
+</body>
+</html>
